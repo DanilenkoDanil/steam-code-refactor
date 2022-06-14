@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Title</title>
+		<style type="text/css">
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
+			body {
+				padding: 0;
+				margin: 0;
+				font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+					"Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+					"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+					"Noto Color Emoji";
+				height: 100vh;
+				position: relative;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				margin: 0;
+			}
+
+			.container {
+				max-width: 1630px;
+				padding: 0 15px;
+				margin: 0 auto;
+			}
+
+			.header {
+				border-bottom: 1px solid #dee2e6;
+				margin-bottom: 40px;
+			}
+
+			.header__content {
+				padding: 17px 0;
+			}
+
+			.header__title {
+				font-size: 25px;
+				font-weight: 400;
+			}
+
+			.main {
+				display: flex;
+				justify-content: center;
+				padding: 0 5px;
+			}
+
+			.product {
+				background-image: #fff;
+				border-radius: 10px;
+				overflow: hidden;
+				border: 1px solid #dedede;
+			}
+
+			.product__img {
+				max-width: 100%;
+				height: auto;
+				object-fit: cover;
+			}
+
+			.product__info {
+				padding: 10px 15px;
+				border-bottom: 1px solid #dedede;
+			}
+
+			.product__info:last-child {
+				border: none;
+				padding: 15px 15px;
+			}
+
+			.product__row span {
+				color: inherit;
+				font-weight: 400;
+				font-size: 17px;
+			}
+
+			.product__bold {
+				font-weight: 700 !important;
+			}
+
+			.product__copy {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			.product__btn {
+				width: 100%;
+				border-radius: 10px;
+				border: 1px solid #dedede;
+				background-color: transparent;
+				cursor: pointer;
+				padding: 10px 15px;
+				transition: all 0.3s linear;
+			}
+
+			.product__btn:hover {
+				border: 1px solid #000;
+				background-color: #000;
+				color: #fff;
+			}
+
+			@media (max-width: 480px) {
+				.product__row span {
+					font-size: 15px;
+				}
+				.product__info {
+					padding: 10px 0 10px 5px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<div class="container">
+				<div class="header__content">
+					<h1 class="header__title">SteamBot</h1>
+				</div>
+			</div>
+		</header>
+		<main class="main">
+			<div class="product">
+				<img
+					class="product__img"
+					src=" https://cdn.cloudflare.steamstatic.com/steam/apps/1238860/header.jpg?t=1628708723"
+					alt=""
+				/>
+				<div class="product__info">
+					<div class="product__row">
+						<span class="product__bold">Product Name :</span> &nbsp;
+						<a class="product__link" href="{{ game_link }}" target="_blank">
+							<span class="product__name-game" translate="no"
+								>Battlefield 4</span
+							>
+						</a>
+					</div>
+					<div class="product__row">
+						<span class="product__bold" translate="no"
+							>Unique Product Code :</span
+						>
+						&nbsp;<span>702E3073A2994FC3</span>
+					</div>
+				</div>
+				<div class="product__info">
+					<div class="product__row">
+						<span class="product__bold">Account Name :</span> &nbsp;
+						<span class="product__copy" id="copy" translate="no"
+							>newumujap</span
+						>
+					</div>
+					<div class="product__row">
+						<span class="product__bold">Account Password :</span> &nbsp;
+						<span class="product__copy" id="copy" translate="no"
+							>4poD5tDN4W</span
+						>
+					</div>
+				</div>
+				<div class="product__info">
+					<div class="product__row">
+						<button class="product__btn" type="button">
+							Get code for change email
+						</button>
+						<script></script>
+						<div id="myOutput"></div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<script>
+			const copyText = document.querySelectorAll("#copy");
+
+			copyText.forEach(item => {
+				item.addEventListener("click", () => {
+					const textArea = document.createElement("textarea");
+					textArea.value = item.textContent;
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand("Copy");
+					textArea.remove();
+				});
+			});
+		</script>
+	</body>
+</html>

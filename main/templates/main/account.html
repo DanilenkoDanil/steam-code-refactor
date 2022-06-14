@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SteamBot</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<style type="text/css">
+			*,
+			*::before,
+			*::after {
+				box-sizing: border-box;
+			}
+
+			body {
+				padding: 0;
+				margin: 0;
+				font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+					"Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif,
+					"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+					"Noto Color Emoji";
+				height: 100vh;
+				position: relative;
+			}
+
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				margin: 0;
+			}
+
+			.container {
+				max-width: 1630px;
+				padding: 0 15px;
+				margin: 0 auto;
+			}
+
+			.header {
+				border-bottom: 1px solid #dee2e6;
+				margin-bottom: 40px;
+			}
+
+			.header__content {
+				padding: 17px 0;
+			}
+
+			.header__title {
+				font-size: 25px;
+				font-weight: 400;
+			}
+
+			.main {
+				display: flex;
+				justify-content: center;
+				padding: 0 5px;
+			}
+
+			.product {
+				background-image: #fff;
+				border-radius: 10px;
+				overflow: hidden;
+				border: 1px solid #dedede;
+			}
+
+			.product__img {
+				max-width: 100%;
+				height: auto;
+				object-fit: cover;
+			}
+
+			div.code{
+				text-align: center;
+			}
+
+			.product__info {
+				padding: 10px 15px;
+				border-bottom: 1px solid #dedede;
+			}
+
+			.product__info:last-child {
+				border: none;
+				padding: 15px 15px;
+			}
+
+			.product__row span {
+				color: inherit;
+				font-weight: 400;
+				font-size: 17px;
+			}
+
+			.product__bold {
+				font-weight: 700 !important;
+			}
+
+			.product__copy {
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			.product__btn {
+				width: 100%;
+				border-radius: 10px;
+				border: 1px solid #dedede;
+				background-color: transparent;
+				cursor: pointer;
+				padding: 10px 15px;
+				transition: all 0.3s linear;
+			}
+
+			.product__btn:hover {
+				border: 1px solid #000;
+				background-color: #000;
+				color: #fff;
+			}
+
+			.copy__alert {
+				background-color: #198754;
+				width: 200px;
+				border-radius: 0 0 10px 10px;
+				color: #fff;
+				text-align: center;
+				padding: 10px 0;
+				font-weight: 700;
+
+				position: absolute;
+				top: 0;
+				left: 50%;
+				transform: translate(-50%, -100%);
+				transition: all 0.2s linear;
+			}
+
+			.copy__alert.show {
+				transform: translate(-50%, 0);
+			}
+
+			@media (max-width: 480px) {
+				.product__row span {
+					font-size: 15px;
+				}
+				.product__info {
+					padding: 10px 0 10px 5px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<header class="header">
+			<div class="container">
+				<div class="header__content">
+					<h1 class="header__title">SteamBot</h1>
+				</div>
+			</div>
+		</header>
+		<main class="main">
+			<div class="product">
+				<img
+					class="product__img"
+					src="{{ image_link }}"
+					alt=""
+				/>
+				<div class="product__info">
+					<div class="product__row">
+						<span class="product__bold">Product Name :</span> &nbsp;
+						<a class="product__link" href="{{ game_link }}" target="_blank">
+							<span class="product__name-game" translate="no"
+								>{{ game_name }}</span
+							>
+						</a>
+					</div>
+					<div class="product__row">
+						<span class="product__bold" translate="no"
+							>Unique Product Code :</span
+						>
+						&nbsp;<span>{{ code }}</span>
+					</div>
+				</div>
+				<div class="product__info">
+					<div class="product__row">
+						<span class="product__bold">Account Name :</span> &nbsp;
+						<span class="product__copy login" id="copy" translate="no"
+							><div class="spinner-grow" role="status">
+  							<span class="sr-only">Loading...</span>
+							</div></span
+						>
+					</div>
+					<div class="product__row">
+						<span class="product__bold">Account Password :</span> &nbsp;
+						<span class="product__copy password" id="copy" translate="no"
+							><div class="spinner-grow" role="status">
+  							<span class="sr-only">Loading...</span>
+							</div></span>
+					</div>
+				</div>
+				<div class="product__info">
+					<div class="product__row">
+						<button class="product__btn" id ="load_code" type="button">
+							Get code for change email
+						</button>
+						<script>
+
+							let data = {
+									uniquecode: "{{ code }}"
+								}
+							let login
+							login = null
+
+							function sleep (time) {
+							  return new Promise((resolve) => setTimeout(resolve, time));
+							}
+
+							function getAccount() {
+								$.ajax({
+										method: "GET",
+										dataType: "json",
+										data: data,
+										url: {% url "load_account" %},
+										success: function(data){
+											login = data["login"];
+											if (login != null) {
+												$('.login').html(login);
+												$('.password').html(data["password"]);
+											} else {
+												sleep(50000).then(() => {
+													getAccount()
+												});
+											}
+
+										}
+								})
+							}
+							getAccount()
+
+						</script>
+						<script>
+							$('#load_code').on('click', function(){
+								let data = {
+									account: login
+								}
+								$.ajax({
+									method: "GET",
+									dataType: "json",
+									data: data,
+									url: {% url "load_code" %},
+									success: function(data){
+										if (data["data"]["code"] != null){
+											$('#myOutput').html(data["data"]["code"]);
+										} else {
+											$('#myOutput').html("Please, contact the seller!");
+										}
+									}
+								})
+							})
+						</script>
+						<div class='code' id="myOutput"></div>
+					</div>
+				</div>
+			</div>
+		</main>
+		<div class="copy__alert">
+			<p class="copy__alert-text">Текст скопирован</p>
+		</div>
+		<script>
+			const copyText = document.querySelectorAll("#copy");
+			const copyAlert = document.querySelector(".copy__alert");
+
+			copyText.forEach(item => {
+				item.addEventListener("click", () => {
+					const textArea = document.createElement("textarea");
+					textArea.value = item.textContent;
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand("Copy");
+					textArea.remove();
+
+					copyAlert.classList.add("show");
+					setTimeout(() => {
+						copyAlert.classList.remove("show");
+					}, 2000);
+				});
+			});
+		</script>
+	</body>
+</html>
