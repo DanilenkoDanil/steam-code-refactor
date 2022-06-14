@@ -64,7 +64,6 @@ class DynamicAccountLoad(View):
     def get(self, request, *args, **kwargs):
         code = request.GET.get('uniquecode')
         key = get_key(code)
-        print(key)
         if key is False:
             for i in get_shops():
                 info = api.check_code(code, i.guid, i.seller_id)
@@ -148,7 +147,6 @@ def index(request):
                        'image_link': image_link,
                        'code': code,
                         })
-
 
 
 def head(request):
